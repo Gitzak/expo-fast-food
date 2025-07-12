@@ -38,7 +38,7 @@
     }
 
     .custom-btn {
-        @apply bg-primary rounded-full p-3 w-full flex flex-row justify-center;
+        @apply bg-primary rounded-full px-3 py-4 w-full flex flex-row justify-center;
     }
 
     .custom-header {
@@ -78,11 +78,11 @@
     }
 
     .offer-card {
-        @apply w-full h-48 my-3 rounded-xl overflow-hidden shadow-lg flex items-center gap-5;
+        @apply w-full h-48 my-3 rounded-xl overflow-hidden shadow-lg flex items-center gap-3;
     }
 
     .offer-card__info {
-        @apply flex-1 h-full flex flex-col justify-center items-start gap-4;
+        @apply flex-1 h-full flex flex-col justify-center items-start gap-2;
     }
 
     .profile-avatar {
