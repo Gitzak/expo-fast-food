@@ -51,8 +51,9 @@ export interface CartStore {
 
 interface TabBarIconProps {
   focused: boolean;
-  icon: ImageSourcePropType;
+  Icon: LucideIcon;
   title: string;
+  onPress?: () => void;
 }
 
 interface PaymentInfoStripeProps {

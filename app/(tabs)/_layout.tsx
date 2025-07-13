@@ -1,18 +1,17 @@
-import { images } from "@/constants";
 import useAuthStore from "@/store/auth.store";
 import { TabBarIconProps } from "@/type";
 import cn from "clsx";
 import { Redirect, Tabs } from "expo-router";
-import { Image, Text, View } from "react-native";
+import { Home, Search, ShoppingBag, User } from "lucide-react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
-const TabBarIcon = ({ focused, icon, title }: TabBarIconProps) => (
-  <View className="tab-icon">
-    <Image
-      source={icon}
-      className="size-7"
-      resizeMode="contain"
-      tintColor={focused ? "#FE8C00" : "#5D5F6D"}
-    />
+const TabBarIcon = ({ focused, Icon, title, onPress }: TabBarIconProps) => (
+  <TouchableOpacity
+    className="flex-1 items-center justify-center py-2"
+    onPress={onPress}
+    activeOpacity={0.7}
+  >
+    <Icon color={focused ? "#FE8C00" : "#5D5F6D"} size={24} />
     <Text
       className={cn(
         "text-sm font-bold",
@@ -21,7 +20,7 @@ const TabBarIcon = ({ focused, icon, title }: TabBarIconProps) => (
     >
       {title}
     </Text>
-  </View>
+  </TouchableOpacity>
 );
 
 export default function TabLayout() {
@@ -33,65 +32,45 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarShowLabel: false,
-        tabBarStyle: {
-          borderTopLeftRadius: 50,
-          borderTopRightRadius: 50,
-          borderBottomLeftRadius: 50,
-          borderBottomRightRadius: 50,
-          marginHorizontal: 20,
-          height: 80,
-          position: "absolute",
-          bottom: 40,
-          backgroundColor: "white",
-          shadowColor: "#1a1a1a",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.1,
-          shadowRadius: 4,
-          elevation: 5,
-        },
+      }}
+      tabBar={({ navigation, state }) => {
+        const routes = [
+          { name: "index", title: "Home", Icon: Home },
+          { name: "search", title: "Search", Icon: Search },
+          { name: "cart", title: "Cart", Icon: ShoppingBag },
+          { name: "profile", title: "Profile", Icon: User },
+        ];
+
+        return (
+          <View
+            className="flex-row justify-between bg-white px-6 py-3 rounded-full mx-4 mb-5"
+            style={{
+              position: "absolute",
+              bottom: 30,
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.1,
+              shadowRadius: 4,
+              elevation: 5,
+            }}
+          >
+            {routes.map((route, index) => (
+              <TabBarIcon
+                key={route.name}
+                focused={state.index === index}
+                Icon={route.Icon}
+                title={route.title}
+                onPress={() => navigation.navigate(route.name)}
+              />
+            ))}
+          </View>
+        );
       }}
     >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Home",
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon title="Home" icon={images.home} focused={focused} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="search"
-        options={{
-          title: "Search",
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon title="Search" icon={images.search} focused={focused} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="cart"
-        options={{
-          title: "Cart",
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon title="Cart" icon={images.bag} focused={focused} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: "Profile",
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon
-              title="Profile"
-              icon={images.person}
-              focused={focused}
-            />
-          ),
-        }}
-      />
+      <Tabs.Screen name="index" />
+      <Tabs.Screen name="search" />
+      <Tabs.Screen name="cart" />
+      <Tabs.Screen name="profile" />
     </Tabs>
   );
 }
