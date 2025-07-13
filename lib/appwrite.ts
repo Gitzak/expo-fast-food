@@ -1,17 +1,17 @@
-import { CreateUserParams, GetMenuParams, SignInParams } from "@/type";
+import { Category, CreateUserParams, GetMenuParams, SignInParams } from "@/type";
 import { Account, Avatars, Client, Databases, ID, Query, Storage } from "react-native-appwrite";
 
 export const appwriteConfig = {
     endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
     projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
-    platform: "com.expo.food",
-    databaseId: '68725f5c002c72fd3c45',
-    bucketId: '',
-    userCollectionId: '68725f92001932f7124b',
-    categoriesCollectionId: '68643a390017b239fa0f',
-    menuCollectionId: '68643ad80027ddb96920',
-    customizationsCollectionId: '68643c0300297e5abc95',
-    menuCustomizationsCollectionId: '68643cd8003580ecdd8f'
+    platform: process.env.EXPO_PUBLIC_APPWRITE_PLATFORM!,
+    databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!,
+    bucketId: process.env.EXPO_PUBLIC_APPWRITE_BUCKET_ID!,
+    userCollectionId: process.env.EXPO_PUBLIC_APPWRITE_USER_COLLECTION_ID!,
+    categoriesCollectionId: process.env.EXPO_PUBLIC_APPWRITE_CATEGORIES_COLLECTION_ID!,
+    menuCollectionId: process.env.EXPO_PUBLIC_APPWRITE_MENU_COLLECTION_ID!,
+    customizationsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_CUSTOMIZATIONS_COLLECTION_ID!,
+    menuCustomizationsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_MENU_CUSTOMIZATIONS_COLLECTION_ID!
 }
 
 export const client = new Client();
@@ -57,8 +57,7 @@ export const signIn = async ({ email, password }: SignInParams) => {
 export const getCurrentUser = async () => {
     try {
         const currentAccount = await account.get();
-        console.log('getCurrentUser', currentAccount);
-        
+                
         if(!currentAccount) throw Error;
 
         const currentUser = await databases.listDocuments(
@@ -102,7 +101,7 @@ export const getCategories = async () => {
             appwriteConfig.categoriesCollectionId,
         )
 
-        return categories.documents;
+        return categories.documents as unknown as Category[];
     } catch (e) {
         throw new Error(e as string);
     }
